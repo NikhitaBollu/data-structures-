@@ -1,71 +1,65 @@
 #include <stdio.h>
 
-int MAXSIZE = 8;       
-int stack[8];     
-int top = -1;            
+#define MAX_SIZE 10
 
-int isempty() {
+int stack[MAX_SIZE];
+int top = -1;
 
-   if(top == -1)
-      return 1;
-   else
-      return 0;
-}
-   
-int isfull() {
 
-   if(top == MAXSIZE)
-      return 1;
-   else
-      return 0;
-}
-
-int peek() {
-   return stack[top];
+void push(int value) {
+    if (top == MAX_SIZE - 1) {
+        printf("Stack overflow! Cannot push %d\n", value);
+    } else {
+        stack[++top] = value;
+        printf("%d pushed to stack\n", value);
+    }
 }
 
 int pop() {
-   int data;
-	
-   if(!isempty()) {
-      data = stack[top];
-      top = top - 1;   
-      return data;
-   } else {
-      printf("Could not retrieve data, Stack is empty.\n");
-   }
+    if (top == -1) {
+        printf("Stack underflow! Cannot pop from an empty stack\n");
+        return -1;
+    } else {
+        return stack[top--];
+    }
 }
 
-int push(int data) {
 
-   if(!isfull()) {
-      top = top + 1;   
-      stack[top] = data;
-   } else {
-      printf("Could not insert data, Stack is full.\n");
-   }
+int peek() {
+    if (top == -1) {
+        printf("Stack is empty\n");
+        return -1;
+    } else {
+        return stack[top];
+    }
+}
+
+
+void printStack() {
+    if (top == -1) {
+        printf("Stack is empty\n");
+    } else {
+        printf("Stack elements: ");
+        for (int i = 0; i <= top; i++) {
+            printf("%d ", stack[i]);
+        }
+        printf("\n");
+    }
 }
 
 int main() {
-   // push items on to the stack 
-   push(3);
-   push(5);
-   push(9);
-   push(1);
-   push(12);
-   push(15);
+    push(10);
+    push(20);
+    push(30);
 
-   printf("Element at top of the stack: %d\n" ,peek());
-   printf("Elements: \n");
+    printStack();
 
-   // print stack data 
-   while(!isempty()) {
-      int data = pop();
-      printf("%d\n",data);
-   }
+    printf("Top element: %d\n", peek());
 
-   printf("Stack full: %s\n" , isfull()?"true":"false");
-   printf("Stack empty: %s\n" , isempty()?"true":"false");
-   
-   return 0;
+    printf("Popped element: %d\n", pop());
+
+    printStack();
+
+    return 0;
 }
+
